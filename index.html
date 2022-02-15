@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Sora:wght@100&display=swap" rel="stylesheet">
+
+	<style type="text/css">
+		
+		html,body{
+			margin: 0;
+			padding: 0;
+			background: #000;
+			font-family: 'courier';
+			
+			color: #fff;
+			font-size: 6pt;
+			line-height: 4pt;
+		}
+
+	</style>
+</head>
+
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+<script type="text/javascript">
+		
+		const density = '         .:-i|=+%O#@'
+		//const density='       .\`^",:;Il!i><~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
+		let video;
+		let asciiDiv;
+
+	 	function setup(){
+
+	 		noCanvas();
+	 		video=createCapture(VIDEO);
+	 		video.size(256,192);	//64,48
+	 		asciiDiv=createDiv();
+
+	 	}
+	 	function draw(){
+
+	 		video.loadPixels();
+
+	 		let asciiImage="";
+
+
+	 		for(let j=0;j<video.height;j++)
+	 		{
+	 			for(let i=0;i<video.width;i++)
+	 			{
+	 				const pixelIndex=(i+j*video.width)*4;
+	 				const r=video.pixels[pixelIndex+0];
+	 				const g=video.pixels[pixelIndex+1];
+	 				const b=video.pixels[pixelIndex+2];
+
+	 				//const avg=(r+g+b)/3
+	 				const avg=(r * 0.2126 + g * 0.7152 + b * 0.0722)
+	 				const len=density.length;
+	 				const charIndex=floor(map(avg,0,255,0,len));
+	 				const c=density.charAt(charIndex);
+
+	 				if(c==" ")
+	 					asciiImage+="&nbsp"
+	 				else
+	 					asciiImage+=c
+	 			}
+
+	 			asciiImage+='<br>'
+	 		}
+
+	 		asciiDiv.html(asciiImage);
+	 	}
+</script>
+
+</body>
+</html>
